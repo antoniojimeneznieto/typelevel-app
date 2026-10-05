@@ -21,6 +21,8 @@ jobs:
           cache: sbt
       - uses: sbt/setup-sbt@v1
       - uses: scalacenter/sbt-dependency-submission@v3
+        with:
+          configs-ignore: scala-tool scala-doc-tool # compiler and Scaladoc tooling, not app dependencies
 
   dependency-review:
     name: Dependency review
