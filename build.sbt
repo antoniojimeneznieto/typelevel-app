@@ -6,6 +6,7 @@ val CatsEffectVersion = "3.7.1"
 val Fs2Version        = "3.14.0"
 val Http4sVersion     = "0.23.38"
 val SkunkVersion      = "1.0.0"
+val LogbackVersion    = "1.2.3"
 
 lazy val root = (project in file("."))
   .settings(
@@ -17,6 +18,7 @@ lazy val root = (project in file("."))
       "co.fs2"        %% "fs2-io"              % Fs2Version,
       "org.http4s"    %% "http4s-ember-server" % Http4sVersion,
       "org.http4s"    %% "http4s-dsl"          % Http4sVersion,
-      "org.tpolecat"  %% "skunk-core"          % SkunkVersion
+      "org.tpolecat"  %% "skunk-core"          % SkunkVersion,
+      "ch.qos.logback" % "logback-classic"     % LogbackVersion
     )
   )
