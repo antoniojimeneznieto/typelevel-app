@@ -1,0 +1,37 @@
+rules:
+  - id: unchecked-option-get
+    languages: [scala]
+    severity: ERROR
+    message: >-
+      `$O.get` throws a NoSuchElementException when the Option is None, and it
+      isn't checked first. Handle the None case with pattern matching, `fold`,
+      `getOrElse` or `map`, or check `isDefined`/`nonEmpty` before calling `.get`.
+    metadata:
+      shortDescription: Unchecked Option.get
+      help: >-
+        Calling `.get` on `None` throws a `NoSuchElementException`. Prefer handling
+        both cases with pattern matching, `fold`, `getOrElse` or `map`. If `.get`
+        is really needed, check the Option with `isDefined`, `nonEmpty` or
+        `isEmpty` first.
+      tags: [correctness]
+    options:
+      # Follow vals back to their value, e.g. `val name = sys.env.get("NAME")`
+      symbolic_propagation: true
+    patterns:
+      - pattern: $O.get
+      # $O is an Option: declared as one, or returned by a common Option-returning call
+      - metavariable-pattern:
+          metavariable: $O
+          pattern-either:
+            - pattern: '($X: Option[$T])'
+            - pattern: Option($X)
+            - pattern: $X.get($KEY)
+            - pattern: $X.headOption
+            - pattern: $X.lastOption
+            - pattern: $X.find(...)
+            - pattern: $X.collectFirst(...)
+            - pattern: $X.toOption
+      # $O isn't checked by an enclosing if
+      - pattern-not-inside: if (<... $O.isDefined ...>) ...
+      - pattern-not-inside: if (<... $O.nonEmpty ...>) ...
+      - pattern-not-inside: if (<... $O.isEmpty ...>) ...
