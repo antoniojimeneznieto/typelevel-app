@@ -1,0 +1,30 @@
+name: PR title
+
+on:
+  pull_request_target:
+    branches: [main]
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  pull-requests: write # comment on PRs from forks too
+
+jobs:
+  check:
+    name: Check PR title
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Require a Conventional Commits title
+        run: |
+          title="${{ github.event.pull_request.title }}"
+          if ! echo "$title" | grep -Eq '^(feat|fix|docs|chore|refactor|test|build|ci)(\(.+\))?: .+'; then
+            echo "::error::PR title must follow Conventional Commits, got: $title"
+            exit 1
+          fi
+
+      - name: Explain the expected format
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >
+          gh pr comment ${{ github.event.pull_request.number }} --repo ${{ github.repository }}
+          --body "Please use a Conventional Commits title, e.g. \`feat: add health endpoint\`."
