@@ -21,3 +21,20 @@ jobs:
           cache: sbt
       - uses: sbt/setup-sbt@v1
       - uses: scalacenter/sbt-dependency-submission@v3
+
+  dependency-review:
+    name: Dependency review
+    if: github.event_name == 'pull_request'
+    needs: dependency-submission
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: write # post the review summary as a PR comment
+    steps:
+      - uses: actions/dependency-review-action@v5.0.0
+        with:
+          fail-on-severity: low
+          allow-licenses: Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause
+          comment-summary-in-pr: always
+          show-patched-versions: true
+          retry-on-snapshot-warnings: true
