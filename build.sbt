@@ -17,6 +17,8 @@ lazy val root = (project in file("."))
       "org.typelevel" %% "cats-effect"         % CatsEffectVersion,
       "co.fs2"        %% "fs2-core"            % Fs2Version,
       "co.fs2"        %% "fs2-io"              % Fs2Version,
+      // Outdated on purpose: a known-vulnerable version for the Dependabot alerts demo
+      "org.postgresql" % "postgresql"          % "42.2.10",
       "org.http4s"    %% "http4s-ember-server" % Http4sVersion,
       "org.http4s"    %% "http4s-dsl"          % Http4sVersion,
       "org.tpolecat"  %% "skunk-core"          % SkunkVersion
