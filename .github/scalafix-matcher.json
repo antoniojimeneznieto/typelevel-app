@@ -1,0 +1,17 @@
+{
+  "problemMatcher": [
+    {
+      "owner": "scalafix",
+      "severity": "error",
+      "pattern": [
+        {
+          "regexp": "^\\[error\\] (.+\\.scala):(\\d+):(\\d+): error: (\\[\\w+\\] .+)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "message": 4
+        }
+      ]
+    }
+  ]
+}

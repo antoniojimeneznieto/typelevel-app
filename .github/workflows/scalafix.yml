@@ -1,0 +1,28 @@
+name: Scalafix
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  scalafix:
+    name: Scalafix
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 25
+          cache: sbt
+      - uses: sbt/setup-sbt@v1
+
+      - name: Annotate Scalafix errors on the PR
+        run: echo "::add-matcher::.github/scalafix-matcher.json"
+
+      - name: Check Scalafix rules
+        run: sbt -Dsbt.color=false "scalafixAll --check"

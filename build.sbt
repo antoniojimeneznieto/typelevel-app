@@ -2,6 +2,8 @@ ThisBuild / scalaVersion := "3.9.0"
 ThisBuild / organization := "com.example"
 ThisBuild / version      := "0.1.0-SNAPSHOT"
 
+ThisBuild / semanticdbEnabled := true // needed by Scalafix semantic rules
+
 val CatsEffectVersion = "3.7.1"
 val Fs2Version        = "3.14.0"
 val Http4sVersion     = "0.23.38"
