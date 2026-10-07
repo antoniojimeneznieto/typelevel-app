@@ -3,6 +3,7 @@ ThisBuild / organization := "com.example"
 ThisBuild / version      := "0.1.0-SNAPSHOT"
 
 ThisBuild / semanticdbEnabled := true // needed by Scalafix semantic rules
+ThisBuild / scalafixDependencies += "org.typelevel" %% "typelevel-scalafix-cats" % "0.6.0" // provides TypelevelMapSequence
 
 val CatsEffectVersion = "3.7.1"
 val Fs2Version        = "3.14.0"
