@@ -2,8 +2,19 @@ ThisBuild / scalaVersion := "3.9.0"
 ThisBuild / organization := "com.example"
 ThisBuild / version      := "0.1.0-SNAPSHOT"
 
-ThisBuild / semanticdbEnabled := true // needed by Scalafix semantic rules
+// Scalafix
+ThisBuild / semanticdbEnabled    := true // needed by Scalafix semantic rules
 ThisBuild / scalafixDependencies += "org.typelevel" %% "typelevel-scalafix-cats" % "0.6.0" // provides TypelevelMapSequence
+ThisBuild / scalafixConfig       := Some(file(".scalafix.conf")) // where rules are configured (the default location)
+ThisBuild / scalafixOnCompile    := false // don't rewrite code on every compile: CI runs `scalafixAll --check`
+ThisBuild / scalafixCaching      := true  // incremental: skip files unchanged since the last run
+
+// Don't lint generated code
+Compile / scalafix / unmanagedSources :=
+  (Compile / unmanagedSources).value.filterNot(_.getPath.contains("generated"))
+
+addCommandAlias("fix", "scalafixAll")              // apply rewrites locally
+addCommandAlias("fixCheck", "scalafixAll --check") // same check as CI
 
 val CatsEffectVersion = "3.7.1"
 val Fs2Version        = "3.14.0"
